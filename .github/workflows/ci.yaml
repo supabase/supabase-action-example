@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-20.04
+
+    services:
+      supabase_db_cli:
+        image: supabase/postgres:14.1.0.34
+        ports:
+          - 54322:5432
+        environment:
+          POSTGRES_PASSWORD: postgres
+        command:
+          - postgres
+          - -c
+          - config_file=/etc/postgresql/postgresql.conf
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 0.32.2
+
+      - run: supabase db commit --migra pg_example
+
+      - run: supabase db test
