@@ -31,6 +31,7 @@ jobs:
       - uses: supabase/setup-cli@v1
         with:
           version: 0.32.2
+      - run: docker ps -a
       - run: supabase init
       - run: supabase db commit --migra pg_example
       - run: supabase db test
