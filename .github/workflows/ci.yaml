@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     services:
-      supabase_db_cli:
+      postgres:
         image: supabase/postgres:14.1.0.34
         ports:
           - 54322:5432
@@ -25,6 +25,7 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+          --name supabase_db_cli
 
     steps:
       - uses: actions/checkout@v3
