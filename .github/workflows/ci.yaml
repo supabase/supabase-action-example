@@ -25,16 +25,13 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-          --name supabase_db_cli
+          --name supabase_db_supabase-dev
 
     steps:
       - uses: actions/checkout@v3
       - uses: supabase/setup-cli@v1
         with:
           version: 0.32.2
-      - run: cat /etc/docker/daemon.json
-      - run: docker ps -a
-      - run: docker inspect supabase_db_cli
       - run: supabase init
       - run: supabase db commit --migra pg_example
       - run: supabase db test
