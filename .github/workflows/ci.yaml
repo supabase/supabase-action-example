@@ -19,10 +19,6 @@ jobs:
           - 54322:5432
         env:
           POSTGRES_PASSWORD: postgres
-        command:
-          - postgres
-          - -c
-          - config_file=/etc/postgresql/postgresql.conf
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
