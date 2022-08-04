@@ -35,5 +35,5 @@ jobs:
       - run: supabase init
       - run: supabase db remote set postgresql://postgres:postgres@localhost:54322/postgres
       - run: supabase db remote push
-      # - run: supabase db commit --migra pg_example
+      - run: supabase db commit --migra ci
       # - run: supabase db test
