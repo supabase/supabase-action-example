@@ -17,12 +17,18 @@ jobs:
         image: supabase/postgres:14.1.0.34
         ports:
           - 54322:5432
-        environment:
+        env:
           POSTGRES_PASSWORD: postgres
         command:
           - postgres
           - -c
           - config_file=/etc/postgresql/postgresql.conf
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v3
