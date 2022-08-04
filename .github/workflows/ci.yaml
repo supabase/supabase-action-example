@@ -33,6 +33,7 @@ jobs:
         with:
           version: 0.32.2
       - run: docker ps -a
+      - run: docker inspect supabase_db_cli
       - run: supabase init
       - run: supabase db commit --migra pg_example
       - run: supabase db test
