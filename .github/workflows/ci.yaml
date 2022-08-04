@@ -33,6 +33,6 @@ jobs:
         with:
           version: 0.32.2
       - run: supabase init
-      - run: supabase db reset
-      - run: supabase db commit --migra pg_example
-      - run: supabase db test
+      # - run: supabase db reset
+      # - run: supabase db commit --migra pg_example
+      # - run: supabase db test
