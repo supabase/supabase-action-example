@@ -16,13 +16,13 @@ jobs:
 
       - uses: supabase/setup-cli@v1
         with:
-          version: 0.34.1
+          version: 0.34.2
 
       - run: supabase init
       - run: supabase start
 
-      # - name: Run pgTAP tests
-      #   run: supabase db test
+      # - run: supabase db lint
+      # - run: supabase db test
 
       - name: Verify generated types are checked in
         run: |
