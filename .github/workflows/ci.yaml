@@ -21,9 +21,6 @@ jobs:
       - run: supabase init
       - run: supabase start
 
-      - name: Verify migration scripts are executable
-        run: supabase db reset
-
       # - name: Run pgTAP tests
       #   run: supabase db test
 
