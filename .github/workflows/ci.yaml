@@ -12,21 +12,6 @@ jobs:
     name: Test
     runs-on: ubuntu-20.04
 
-    services:
-      postgres:
-        image: supabase/postgres:14.1.0.34
-        ports:
-          - 54322:5432
-        env:
-          POSTGRES_PASSWORD: postgres
-        # --name takes the form of supabase_db_{project_id}
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-          --name supabase_db_supabase-dev
-
     steps:
       - uses: actions/checkout@v3
 
@@ -34,15 +19,11 @@ jobs:
         with:
           version: 0.34.1
 
-      - name: Activate main branch
-        run: |
-          supabase init || true
-          # supabase db switch main
-          mkdir -p supabase/.branches
-          echo "main" > supabase/.branches/_current_branch
+      - run: supabase init
+      - run: supabase start
 
       - name: Verify migration scripts are executable
-        run: supabase db reset || true
+        run: supabase db reset
 
       # - name: Run pgTAP tests
       #   run: supabase db test
