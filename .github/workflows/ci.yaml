@@ -19,7 +19,7 @@ jobs:
           - 54322:5432
         env:
           POSTGRES_PASSWORD: postgres
-        # Set health checks to wait until postgres has started
+        # --name takes the form of supabase_db_{project_id}
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -30,28 +30,28 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # TODO: support project flag, ignore config.toml
       - uses: supabase/setup-cli@v1
         with:
           version: 0.34.1
-      - run: supabase init
-      - name: Set current branch to main
+
+      - name: Activate main branch
         run: |
+          supabase init || true
+          # supabase db switch main
           mkdir -p supabase/.branches
           echo "main" > supabase/.branches/_current_branch
 
       - name: Verify migration scripts are executable
-        run: supabase db reset
+        run: supabase db reset || true
 
       # - name: Run pgTAP tests
       #   run: supabase db test
 
-      - name: Verify generated types are updated
+      - run: supabase gen types typescript --local > types.ts
+      - name: Verify generated types are checked in
         run: |
-          supabase gen types typescript --local
-          # Compare the expected and actual types.ts
           if [ "$(git diff --ignore-space-at-eol types.ts | wc -l)" -gt "0" ]; then
-            echo "Detected uncommitted changes after build.  See status below:"
+            echo "Detected uncommitted changes after build. See status below:"
             git diff
             exit 1
           fi
