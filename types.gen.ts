@@ -8,7 +8,25 @@ export type Json =
 
 export interface Database {
   public: {
-    Tables: {};
+    Tables: {
+      employees: {
+        Row: {
+          id: number;
+          name: string | null;
+          title: string | null;
+        };
+        Insert: {
+          id?: never;
+          name?: string | null;
+          title?: string | null;
+        };
+        Update: {
+          id?: never;
+          name?: string | null;
+          title?: string | null;
+        };
+      };
+    };
     Functions: {};
   };
 }
