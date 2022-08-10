@@ -1,0 +1,26 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  staging:
+    runs-on: ubuntu-latest
+
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      PROJECT_REF: jgcajpecsmkatlbzsstn
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 0.38.1
+
+      - run: supabase init
+      - run: supabase link --project-ref $PROJECT_REF
+      - run: supabase db push -p ${{ secrets.DB_PASSWORD }}
