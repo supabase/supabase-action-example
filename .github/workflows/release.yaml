@@ -22,5 +22,5 @@ jobs:
           version: 0.38.1
 
       - run: supabase init
-      - run: supabase linke --project-ref $PROJECT_REF
+      - run: supabase link --project-ref $PROJECT_REF
       - run: supabase db push -p ${{ secrets.DB_PASSWORD }}
