@@ -18,7 +18,6 @@ jobs:
         with:
           version: 0.38.2
 
-      - run: supabase init
       - run: supabase start
 
       # - run: supabase db lint
