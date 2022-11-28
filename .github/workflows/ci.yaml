@@ -20,6 +20,8 @@ jobs:
           version: 1.16.1
 
       - run: supabase db start
+        env:
+          SUPABASE_INTERNAL_IMAGE_REGISTRY: ghcr.io
       - run: supabase db lint
       - run: supabase test db
 
