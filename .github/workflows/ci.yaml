@@ -19,6 +19,12 @@ jobs:
         with:
           version: 1.16.1
 
+      - uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - run: supabase db start
         env:
           SUPABASE_INTERNAL_IMAGE_REGISTRY: ghcr.io
