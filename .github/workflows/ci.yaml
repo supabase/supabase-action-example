@@ -20,7 +20,7 @@ jobs:
 
       - uses: supabase/setup-cli@v1
         with:
-          version: 1.16.2
+          version: 1.26.7
 
       - uses: docker/login-action@v2
         with:
