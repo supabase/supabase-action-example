@@ -8,12 +8,12 @@ on:
       - develop
   workflow_dispatch:
 
+env:
+  SUPABASE_INTERNAL_IMAGE_REGISTRY: ghcr.io
+
 jobs:
   test:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: read
 
     steps:
       - uses: actions/checkout@v3
@@ -22,19 +22,11 @@ jobs:
         with:
           version: 1.28.0
 
-      - uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
       - uses: ScribeMD/docker-cache@0.2.6
         with:
           key: supabase-1.28.0-${{ runner.os }}-${{ runner.arch }}
 
       - run: supabase db start
-        env:
-          SUPABASE_INTERNAL_IMAGE_REGISTRY: ghcr.io
       - run: supabase db lint
       - run: supabase test db
 
