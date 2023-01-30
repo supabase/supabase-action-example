@@ -21,8 +21,6 @@ jobs:
           version: latest
 
       - uses: supabase/setup-cli@v1
-        with:
-          version: latest
 
       - run: supabase db start
       - run: supabase db lint
