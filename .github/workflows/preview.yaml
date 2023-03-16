@@ -1,0 +1,33 @@
+name: Preview
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GH_PAT }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - id: codespace
+        run: |
+          name=$(gh api \
+          --method POST \
+          -H "Accept: application/vnd.github+json" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          /repos/{owner}/{repo}/pulls/${{ github.event.number }}/codespaces \
+          -F repository_id=${{ github.repository_id }} \
+          --jq ".name")
+          echo "name=$name" >> $GITHUB_OUTPUT
+
+      - run: |
+          gh issue comment ${{ github.event.number }} --edit-last \
+          -b '[Preview](https://${{ steps.codespace.outputs.name }}-54323.preview.app.github.dev) | [Console](https://${{ steps.codespace.outputs.name }}.github.dev)'
+
+      # - run: gh codespace logs -c ${{ steps.codespace.outputs.name }} -f
