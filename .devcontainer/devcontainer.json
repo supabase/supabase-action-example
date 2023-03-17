@@ -3,12 +3,14 @@
   "image": "mcr.microsoft.com/devcontainers/typescript-node:16-bullseye",
   // Features to add to the dev container. More info: https://containers.dev/implementors/features.
   "features": {
+    "github-cli": {},
     "ghcr.io/devcontainers/features/docker-in-docker:1": {}
   },
   // Use 'postCreateCommand' to run commands after the container is created.
   "onCreateCommand": "npx -y supabase start",
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   "forwardPorts": [54321, 54322, 54323, 54324, 54325, 54326],
+  "postAttachCommand": "gh codespace ports visibility 54321:public 54322:public 54323:public 54324:public 54325:public 54326:public -c $CODESPACE_NAME",
   // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
   // "remoteUser": "root"
   "containerEnv": {
