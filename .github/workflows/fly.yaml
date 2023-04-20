@@ -20,11 +20,25 @@ jobs:
         env:
           DB_ONLY: true
       - run: |
-          body='[Preview](https://${{ steps.deployment.outputs.hostname }}) | [Console](https://fly.io/apps/${{ github.head_ref }})'
+          body='[Deploying...](https://fly.io/apps/${{ github.head_ref }})'
           exit_code=0
           gh issue comment ${{ github.event.number }} --edit-last -b "$body" || exit_code=$?
           if [[ "$exit_code" -gt 0 ]]; then
             gh issue comment ${{ github.event.number }} -b "$body"
           fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: |
+          for i in {1..60}; do
+            status=$(flyctl m list -a ${{ github.head_ref }} --json | jq -r 'map(.checks)[0][0].status')
+            if [ "$status" == 'passing' ]; then
+              break
+            fi
+            echo "project not ready: $status"
+            sleep 2
+          done
+      - run: |
+          body='[Preview](https://${{ steps.deployment.outputs.hostname }}) | [Console](https://fly.io/apps/${{ github.head_ref }})'
+          gh issue comment ${{ github.event.number }} --edit-last -b "$body"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
