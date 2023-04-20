@@ -1,0 +1,23 @@
+name: Fly Preview
+
+on:
+  pull_request:
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    env:
+      FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      FLY_ORGANIZATION_ID: personal
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+      - run: fly m api-proxy -o $FLY_ORGANIZATION_ID &
+      - id: deployment
+        uses: sweatybridge/fly-preview@main
+        env:
+          DB_ONLY: true
+      - run: |
+          gh issue comment ${{ github.event.number }} --edit-last \
+          -b '[Preview](https://${{ steps.deployment.outputs.hostname }}) | [Console](https://fly.io/apps/${{ github.head_ref }})'
