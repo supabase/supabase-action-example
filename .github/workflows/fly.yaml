@@ -20,7 +20,10 @@ jobs:
         env:
           DB_ONLY: true
       - run: |
-          gh issue comment ${{ github.event.number }} --edit-last \
-          -b '[Preview](https://${{ steps.deployment.outputs.hostname }}) | [Console](https://fly.io/apps/${{ github.head_ref }})'
+          body='[Preview](https://${{ steps.deployment.outputs.hostname }}) | [Console](https://fly.io/apps/${{ github.head_ref }})'
+          gh issue comment ${{ github.event.number }} --edit-last -b "$body"
+          if [[ "$?" -gt 0 ]]; then
+            gh issue comment ${{ github.event.number }} -b "$body"
+          fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
