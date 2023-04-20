@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: fly m api-proxy -o $FLY_ORGANIZATION_ID &
+      - run: flyctl m api-proxy -o $FLY_ORGANIZATION_ID &
       - id: deployment
         uses: sweatybridge/fly-preview@main
         env:
