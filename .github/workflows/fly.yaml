@@ -42,3 +42,8 @@ jobs:
           gh issue comment ${{ github.event.number }} --edit-last -b "$body"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: |
+          supabase db push --db-url 'postgres://postgres:postgres@${{ steps.deployment.outputs.hostname }}/postgres'
