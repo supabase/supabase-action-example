@@ -9,7 +9,8 @@ jobs:
     env:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       FLY_ORGANIZATION_ID: D307G6NwgR0z2u4vPG23jYy8a3cg3xbYR
-
+    permissions:
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
@@ -21,3 +22,5 @@ jobs:
       - run: |
           gh issue comment ${{ github.event.number }} --edit-last \
           -b '[Preview](https://${{ steps.deployment.outputs.hostname }}) | [Console](https://fly.io/apps/${{ github.head_ref }})'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
