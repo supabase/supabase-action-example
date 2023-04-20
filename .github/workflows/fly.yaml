@@ -21,8 +21,9 @@ jobs:
           DB_ONLY: true
       - run: |
           body='[Preview](https://${{ steps.deployment.outputs.hostname }}) | [Console](https://fly.io/apps/${{ github.head_ref }})'
-          gh issue comment ${{ github.event.number }} --edit-last -b "$body"
-          if [[ "$?" -gt 0 ]]; then
+          exit_code=0
+          gh issue comment ${{ github.event.number }} --edit-last -b "$body" || exit_code=$?
+          if [[ "$exit_code" -gt 0 ]]; then
             gh issue comment ${{ github.event.number }} -b "$body"
           fi
         env:
