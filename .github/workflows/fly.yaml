@@ -22,8 +22,7 @@ jobs:
           PROJECT_REF: qiao-all-in-one
           DB_ONLY: true
       - run: |
-          body="Status: Deploying ($(date))
-          $COMMENT_BODY"
+          body="Status: [Deploying](https://fly.io/apps/${{ github.head_ref }}) ($(date))"
           exit_code=0
           gh issue comment ${{ github.event.number }} --edit-last -b "$body" || exit_code=$?
           if [[ "$exit_code" -gt 0 ]]; then
@@ -31,10 +30,6 @@ jobs:
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COMMENT_BODY: |2
-            ```bash
-            Console URL: [https://fly.io/apps/${{ github.head_ref }}](https://fly.io/apps/${{ github.head_ref }})
-            ```
       - run: |
           for i in {1..60}; do
             status=$(flyctl m list -a ${{ github.head_ref }} --json | jq -r 'map(.checks)[0][0].status')
@@ -45,14 +40,13 @@ jobs:
             sleep 2
           done
       - run: |
-          body="Status: Ready ($(date))
+          body="Status: [Ready](https://fly.io/apps/${{ github.head_ref }}) ($(date))
           $COMMENT_BODY"
           gh issue comment ${{ github.event.number }} --edit-last -b "$body"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           COMMENT_BODY: |2
             ```bash
-            Console URL: [https://fly.io/apps/${{ github.head_ref }}](https://fly.io/apps/${{ github.head_ref }})
                 API URL: http://${{ steps.deployment.outputs.hostname }}
             GraphQL URL: http://${{ steps.deployment.outputs.hostname }}/graphql/v1
                  DB URL: postgresql://postgres:postgres@${{ github.head_ref }}.fly.dev:5432/postgres
