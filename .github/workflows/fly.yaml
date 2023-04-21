@@ -8,16 +8,18 @@ jobs:
     runs-on: ubuntu-latest
     env:
       FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-      FLY_ORGANIZATION_ID: D307G6NwgR0z2u4vPG23jYy8a3cg3xbYR
+      FLY_ORGANIZATION_SLUG: supabase-dev
     permissions:
       pull-requests: write
     steps:
       - uses: actions/checkout@v3
       - uses: superfly/flyctl-actions/setup-flyctl@master
-      - run: flyctl m api-proxy -o personal &
+      - run: flyctl m api-proxy -o "$FLY_ORGANIZATION_SLUG" &
       - id: deployment
         uses: sweatybridge/fly-preview@main
         env:
+          # Specifies the base project to branch from
+          PROJECT_REF: qiao-all-in-one
           DB_ONLY: true
       - run: |
           body='[Deploying...](https://fly.io/apps/${{ github.head_ref }})'
@@ -45,5 +47,5 @@ jobs:
       - uses: supabase/setup-cli@v1
         with:
           version: latest
-      - run: |
-          supabase db push --db-url 'postgres://postgres:postgres@${{ steps.deployment.outputs.hostname }}/postgres'
+      # - run: |
+      #     supabase db push --db-url 'postgres://postgres:postgres@${{ steps.deployment.outputs.hostname }}/postgres'
