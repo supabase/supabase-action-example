@@ -31,7 +31,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: |
           for i in {1..60}; do
-            status=$(flyctl m list -a ${{ github.head_ref }} --json | jq -r 'map(.checks)[0][0].status')
+            status=$(flyctl m list -a ${{ github.head_ref }} --json | jq -r 'map(.checks)[0][0].status') || true
             if [ "$status" == 'passing' ]; then
               break
             fi
