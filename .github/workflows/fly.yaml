@@ -13,7 +13,6 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v3
-      - uses: superfly/flyctl-actions/setup-flyctl@master
       - id: deployment
         uses: sweatybridge/fly-preview@main
         env:
@@ -29,6 +28,7 @@ jobs:
           fi
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: |
           for i in {1..60}; do
             status=$(flyctl m list -a ${{ github.head_ref }} --json | jq -r 'map(.checks)[0][0].status') || true
