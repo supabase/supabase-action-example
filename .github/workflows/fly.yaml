@@ -26,8 +26,11 @@ jobs:
         uses: sweatybridge/fly-preview@main
         env:
           DB_ONLY: true
+      - run: echo "PREVIEW_BRANCH=${DEPLOYMENT_URL%.fly.dev}" >> "$GITHUB_ENV"
+        env:
+          DEPLOYMENT_URL: ${{ steps.deployment.outputs.hostname }}
       - run: |
-          body="Status: [Deploying](https://fly.io/apps/${NEXT_PUBLIC_SUPABASE_URL%.fly.dev}) ($(date))"
+          body="Status: [Deploying](https://fly.io/apps/$PREVIEW_BRANCH) ($(date))"
           exit_code=0
           gh issue comment ${{ github.event.number }} --edit-last -b "$body" || exit_code=$?
           if [[ "$exit_code" -gt 0 ]]; then
@@ -38,7 +41,7 @@ jobs:
       - uses: superfly/flyctl-actions/setup-flyctl@master
       - run: |
           for i in {1..60}; do
-            status=$(flyctl m list -a "${NEXT_PUBLIC_SUPABASE_URL%.fly.dev}" --json | jq -r 'map(.checks)[0][0].status') || true
+            status=$(flyctl m list -a "$PREVIEW_BRANCH" --json | jq -r 'map(.checks)[0][0].status') || true
             if [ "$status" == 'passing' ]; then
               break
             fi
@@ -46,7 +49,7 @@ jobs:
             sleep 2
           done
       - run: |
-          body="Status: [Ready](https://fly.io/apps/${NEXT_PUBLIC_SUPABASE_URL%.fly.dev}) ($(date))
+          body="Status: [Ready](https://fly.io/apps/$PREVIEW_BRANCH) ($(date))
           $COMMENT_BODY"
           gh issue comment ${{ github.event.number }} --edit-last -b "$body"
         env:
