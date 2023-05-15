@@ -19,8 +19,7 @@ jobs:
         with:
           version: latest
       - run: |
-          supabase login
-          supabase gen keys --project-ref "$PROJECT_REF" --experimental >> "$GITHUB_ENV"
+          supabase gen keys --project-ref cimpzzikygouamvsjwxa --experimental >> "$GITHUB_ENV"
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
       - id: deployment
