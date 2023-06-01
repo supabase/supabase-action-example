@@ -23,9 +23,9 @@ jobs:
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
       - id: deployment
-        uses: sweatybridge/fly-preview@main
-        env:
-          DB_ONLY: true
+        uses: supabase/fly-preview@sweatybridge-patch-1
+        # env:
+        #   DB_ONLY: true
       - run: echo "PREVIEW_BRANCH=${DEPLOYMENT_URL%.fly.dev}" >> "$GITHUB_ENV"
         env:
           DEPLOYMENT_URL: ${{ steps.deployment.outputs.hostname }}
