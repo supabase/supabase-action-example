@@ -19,7 +19,9 @@ jobs:
         with:
           version: latest
 
-      - run: supabase db start
+      - run: supabase start
+      - run: curl http://localhost:54321/rest/v1/employees
+
       - run: supabase db lint
       - run: supabase test db
 
