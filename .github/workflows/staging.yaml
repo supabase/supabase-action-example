@@ -1,4 +1,4 @@
-name: Release
+name: Release (Staging)
 
 on:
   push:
@@ -16,11 +16,11 @@ jobs:
       SUPABASE_PROJECT_ID: ${{ secrets.STAGING_PROJECT_ID }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: supabase/setup-cli@v1
         with:
           version: latest
 
-      - run: supabase link --project-ref $SUPABASE_PROJECT_ID
+      - run: supabase link
       - run: supabase db push
