@@ -15,9 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: supabase/setup-cli@v1
+      - uses: sbdchd/squawk-action@v1
         with:
+          pattern: supabase/migrations/*.sql
           version: latest
+
+      - uses: supabase/setup-cli@v1
 
       - run: supabase db start
       - run: supabase db lint
