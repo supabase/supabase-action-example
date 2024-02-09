@@ -1,3 +1,6 @@
+# Terraform
+*_override.tf
+
 # Supabase
 .branches
 .temp
