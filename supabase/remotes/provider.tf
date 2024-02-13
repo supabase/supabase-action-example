@@ -7,5 +7,4 @@ terraform {
   }
 }
 
-provider "supabase" {
-}
+provider "supabase" {}
