@@ -14,7 +14,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
       - uses: supabase/setup-cli@v1
         with:
           version: latest
@@ -53,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      TF_VAR_linked_project: ${{ github.base_ref == 'refs/heads/main' && secrets.PRODUCTION_PROJECT_ID || secrets.STAGING_PROJECT_ID }}
+      TF_VAR_linked_project: ${{ github.base_ref == 'main' && secrets.PRODUCTION_PROJECT_ID || secrets.STAGING_PROJECT_ID }}
       tf_actions_working_dir: supabase/remotes
     defaults:
       run:
