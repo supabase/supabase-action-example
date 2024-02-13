@@ -35,3 +35,8 @@ resource "supabase_settings" "preview" {
     site_url = "http://localhost:3001"
   })
 }
+
+output "branch_database" {
+  value     = one(supabase_branch.new[*].database)
+  sensitive = true
+}

@@ -21,6 +21,12 @@ jobs:
     defaults:
       run:
         working-directory: supabase/remotes
+    outputs:
+      db_url: postgres://${{ steps.branch.outputs.user }}:${{ steps.branch.outputs.password }}@${{ steps.branch.outputs.host }}:${{ steps.branch.outputs.port }}/postgres
+      jwt_secret: ${{ steps.branch.outputs.jwt_secret }}
+      ref: ${{ steps.branch.outputs.id }}
+      status: ${{ steps.branch.outputs.status }}
+      version: ${{ steps.branch.outputs.version }}
 
     steps:
       - uses: actions/checkout@v4
@@ -30,6 +36,30 @@ jobs:
 
       - run: terraform init
       - run: terraform apply -auto-approve -no-color
+      - id: branch
+        run: |
+          terraform output -json branch_database \
+          | jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" \
+          >> "$GITHUB_OUTPUT"
 
-      - if: github.event.pull_request.merged == true
+      - if: github.event.action == 'closed'
         run: terraform apply -auto-approve -no-color -destroy
+
+  migrate:
+    depends_on:
+      - apply
+    runs-on: ubuntu-latest
+    if: github.event.action != 'closed'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - uses: nick-fields/retry@v3
+        with:
+          timeout_seconds: 15
+          max_attempts: 10
+          command: supabase db push --db-url "${{ needs.apply.outputs.db_url }}"
