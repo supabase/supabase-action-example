@@ -19,5 +19,5 @@ data "supabase_pooler" "production" {
 }
 
 output "pooler_url" {
-  value = supabase_pooler.production.url["transaction"]
+  value = data.supabase_pooler.production.url["transaction"]
 }
