@@ -13,3 +13,11 @@ resource "supabase_settings" "production" {
     max_rows             = 1000
   })
 }
+
+data "supabase_pooler" "production" {
+  project_ref = var.linked_project
+}
+
+output "pooler_url" {
+  value = data.supabase_pooler.production.url["transaction"]
+}
