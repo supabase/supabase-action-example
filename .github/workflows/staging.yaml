@@ -1,6 +1,7 @@
 name: Release (Staging)
 
 on:
+  pull_request:
   push:
     branches:
       - develop
@@ -10,9 +11,9 @@ jobs:
   migrate:
     runs-on: ubuntu-latest
     env:
-      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      SUPABASE_DB_PASSWORD: ${{ secrets.STAGING_DB_PASSWORD }}
-      SUPABASE_PROJECT_ID: ${{ secrets.STAGING_PROJECT_ID }}
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_SSL_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_SSL_DB_PASSWORD }}
+      SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_SSL_PROJECT_ID }}
 
     steps:
       - uses: actions/checkout@v4
