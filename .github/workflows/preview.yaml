@@ -69,4 +69,4 @@ jobs:
           max_attempts: 10
           command: supabase link --project-ref ${{ needs.apply.outputs.ref }}
 
-      - run: supabase db reset --linked
+      - run: yes | supabase db reset --linked
