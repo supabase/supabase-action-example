@@ -1,0 +1,14 @@
+{
+  "name": "supabase-action-example",
+  "version": "1.0.0",
+  "description": "Template project for bootstrapping the Supabase CLI on GitHub Actions.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "supabase": "^1.178.2"
+  }
+}
