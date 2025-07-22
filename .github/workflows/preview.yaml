@@ -55,13 +55,12 @@ jobs:
     if: github.event.action != 'closed'
     env:
       SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      SUPABASE_DB_PASSWORD: ${{ needs.apply.outputs.db_pass }}
 
     steps:
       - uses: actions/checkout@v4
       - uses: supabase/setup-cli@v1
         with:
-          version: latest
+          version: 2.33.0
 
       - uses: nick-fields/retry@v3
         with:
