@@ -60,7 +60,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: supabase/setup-cli@v1
         with:
-          version: 2.33.0
+          version: latest
 
       - uses: nick-fields/retry@v3
         with:
