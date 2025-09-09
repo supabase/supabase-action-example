@@ -55,7 +55,6 @@ jobs:
     if: github.event.action != 'closed'
     env:
       SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      SUPABASE_DB_PASSWORD: ${{ needs.apply.outputs.db_pass }}
 
     steps:
       - uses: actions/checkout@v4
